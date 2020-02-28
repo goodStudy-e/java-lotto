@@ -19,7 +19,7 @@ public class InputManager {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    public static int inputPurchaseMoney() { //구입금액
+    public static int inputPurchaseMoney() {
         System.out.println(INPUT_PURCHASE_MONEY_MESSAGE);
         int purchaseMoney = 0;
         try {
@@ -67,31 +67,35 @@ public class InputManager {
         return new WinningLotto(winningLotto, insertBonusBall(winningLotto));
     }
 
-    private static List<Integer> inputWinningLottoNumbers() { //todo: 리팩토링 필요 10줄 넘어감
+    private static List<Integer> inputWinningLottoNumbers() {
         List<Integer> winningLottoNumbers;
         try {
-            String inputNumbers = scanner.next();
-            String[] numbers = inputNumbers.split(",");
-
-            //리팩토링 예정
-            winningLottoNumbers = Arrays.stream(numbers)
-                    .mapToInt(Integer::parseInt)
-                    .filter(number -> number <= Lotto.MAX_LOTTO_NUMBER && number >= Lotto.MIN_LOTTO_NUMBER)
-                    .distinct()
-                    .boxed()
-                    .collect(toList());
-
-            if (winningLottoNumbers.size() != Lotto.LOTTO_LENGTH) {
-                throw new InputException(INPUT_NUMBERS_LENGTH_ERROR);
-            }
+            winningLottoNumbers = getWinningLottoNumbers();
+            isRightLottoLength(winningLottoNumbers);
         } catch (Exception e) {
             return inputWinningLottoNumbers();
         }
-
         return winningLottoNumbers;
     }
 
-    private static int insertBonusBall(Lotto winningLotto) { //todo: 리팩토링 예정 10줄 넘어감
+    private static void isRightLottoLength(List<Integer> winningLottoNumbers) {
+        if (winningLottoNumbers.size() != Lotto.LOTTO_LENGTH) {
+            throw new InputException(INPUT_NUMBERS_LENGTH_ERROR);
+        }
+    }
+
+    private static List<Integer> getWinningLottoNumbers() {
+        String inputNumbers = scanner.next();
+        String[] numbers = inputNumbers.split(",");
+        return Arrays.stream(numbers)
+                .mapToInt(Integer::parseInt)
+                .filter(number -> number <= Lotto.MAX_LOTTO_NUMBER && number >= Lotto.MIN_LOTTO_NUMBER)
+                .distinct()
+                .boxed()
+                .collect(toList());
+    }
+
+    private static int insertBonusBall(Lotto winningLotto) {
         System.out.println(INPUT_BONUS_BALL_MESSAGE);
         int bonusBall = scanner.nextInt();
         System.out.println();
