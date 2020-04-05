@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import utility.InputException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PurchaseMoneyTest {
     @Test
@@ -17,8 +16,9 @@ class PurchaseMoneyTest {
 
     @Test
     @DisplayName("구입 금액이 1000의 배수가 아니면 예외를 던진다.")
-    void test2() {
+    void throwException_ifAmountIsNot1000Multiple() {
         assertThatThrownBy(() -> new PurchaseMoney(1001))
                 .isExactlyInstanceOf(InputException.class);
     }
+
 }
