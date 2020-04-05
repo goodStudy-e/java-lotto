@@ -22,7 +22,7 @@ public class PurchaseMoney {
     }
 
     private void validatePositive(int amount) {
-        if (amount <= 0) { //todo: 구입금액 0을 입력한 후에 다시 금액 입력하면 로또 구매 개수가 0개로 고정됌
+        if (amount <= 0) {
             throw new InputException(INPUT_PURCHASE_MONEY_NONE_ZERO_ERROR);
         }
     }

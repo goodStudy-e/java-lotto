@@ -5,8 +5,7 @@ import domain.PurchaseMoney;
 import domain.WinningLotto;
 
 import java.util.*;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
 
 public class InputManager {
     private static final String INPUT_PURCHASE_MONEY_MESSAGE = "구입 금액을 입력해주세요.";
@@ -20,10 +19,8 @@ public class InputManager {
 
     public static PurchaseMoney inputPurchaseMoney() {
         System.out.println(INPUT_PURCHASE_MONEY_MESSAGE);
-        int purchaseMoney = 0;
-
         try {
-            purchaseMoney = scanner.nextInt();
+            int purchaseMoney = scanner.nextInt();
             return new PurchaseMoney(purchaseMoney);
         } catch (InputException e) {
             return inputPurchaseMoney();
@@ -40,7 +37,7 @@ public class InputManager {
             userLottoList.add(userLotto);
             System.out.println(userLotto);
         }
-        System.out.println();
+
         return userLottoList;
     }
 
@@ -52,17 +49,17 @@ public class InputManager {
 
     public static WinningLotto inputWinningLotto() {
         System.out.println(INPUT_WINNING_LOTTO_NUMBERS_MESSAGE);
-        Lotto winningLotto = new Lotto(inputWinningLottoNumbers());
+        Lotto winningLotto = new Lotto(inputWinningLottoNumber());
         return new WinningLotto(winningLotto, insertBonusBall(winningLotto));
     }
 
-    private static List<Integer> inputWinningLottoNumbers() {
+    private static List<Integer> inputWinningLottoNumber() {
         List<Integer> winningLottoNumbers;
         try {
             winningLottoNumbers = getWinningLottoNumbers();
             isRightLottoLength(winningLottoNumbers);
         } catch (Exception e) {
-            return inputWinningLottoNumbers();
+            return inputWinningLottoNumber();
         }
         return winningLottoNumbers;
     }
@@ -78,10 +75,10 @@ public class InputManager {
         String[] numbers = inputNumbers.split(",");
         return Arrays.stream(numbers)
                 .mapToInt(Integer::parseInt)
-                .filter(number -> number <= Lotto.MAX_LOTTO_NUMBER && number >= Lotto.MIN_LOTTO_NUMBER)
-                .distinct()
+                .filter(number -> Lotto.MIN_LOTTO_NUMBER <= number && number <= Lotto.MAX_LOTTO_NUMBER) // 범위 외 숫자 제거
+                .distinct() //중복된 숫자 제거
                 .boxed()
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
     private static int insertBonusBall(Lotto winningLotto) {
