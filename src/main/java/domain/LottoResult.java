@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.*;
+
 public class LottoResult {
     private static final int PERCENTAGE = 100;
 
@@ -53,21 +55,16 @@ public class LottoResult {
     }
 
     private static Map<Rank, Integer> getRankMap(List<Rank> userRanks, Map<Rank, Integer> rankMap) {
-        userRanks.stream()
-                .forEach(rank -> {
-                    if (rankMap.containsKey(rank)) {
-                        rankMap.put(rank, rankMap.get(rank) + 1);
-                    } else {
-                        rankMap.put(rank, 1);
-                    }
-                });
-        return rankMap;
+        return userRanks.stream()
+                .collect(groupingBy(rank -> rank))
+                .entrySet().stream()
+                .collect(toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
     }
 
     private static List<Rank> getUserRemovedMISSRanks(List<Lotto> userLottos, WinningLotto winningLotto) {
         return userLottos.stream()
-                .map(userLotto -> winningLotto.match(userLotto))
+                .map(winningLotto::match)
                 .filter(rank -> !rank.equals(Rank.MISS))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 }

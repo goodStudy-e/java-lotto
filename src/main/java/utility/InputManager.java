@@ -1,6 +1,7 @@
 package utility;
 
 import domain.Lotto;
+import domain.PurchaseMoney;
 import domain.WinningLotto;
 
 import java.util.*;
@@ -9,8 +10,6 @@ import static java.util.stream.Collectors.toList;
 
 public class InputManager {
     private static final String INPUT_PURCHASE_MONEY_MESSAGE = "구입 금액을 입력해주세요.";
-    private static final String INPUT_PURCHASE_MONEY_ERROR = "1,000원 단위로 입력해주세요.";
-    private static final String INPUT_PURCHASE_MONEY_NONE_ZERO_ERROR = "0원 이상의 금액을 입력해주세요.";
     private static final String INPUT_WINNING_LOTTO_NUMBERS_MESSAGE = "지난주 당첨 번호를 입력해주세요. (, 로 구분)";
     private static final String INPUT_BONUS_BALL_MESSAGE = "보너스 볼을 입력해주세요.";
     private static final String INPUT_NUMBERS_RANGE_ERROR = "1 ~ 45 중에 입력하세요!";
@@ -19,25 +18,15 @@ public class InputManager {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    public static int inputPurchaseMoney() {
+    public static PurchaseMoney inputPurchaseMoney() {
         System.out.println(INPUT_PURCHASE_MONEY_MESSAGE);
         int purchaseMoney = 0;
+
         try {
             purchaseMoney = scanner.nextInt();
-            isRightPurchaseMoney(purchaseMoney);
+            return new PurchaseMoney(purchaseMoney);
         } catch (InputException e) {
-            inputPurchaseMoney();
-        }
-        return purchaseMoney;
-    }
-
-    private static void isRightPurchaseMoney(int purchaseMoney) {
-        System.out.println();
-        if (purchaseMoney == 0) { //todo: 구입금액 0을 입력한 후에 다시 금액 입력하면 로또 구매 개수가 0개로 고정됌
-            throw new InputException(INPUT_PURCHASE_MONEY_NONE_ZERO_ERROR);
-        }
-        if (purchaseMoney % Lotto.LOTTO_UNIT_PRICE != 0) {
-            throw new InputException(INPUT_PURCHASE_MONEY_ERROR);
+            return inputPurchaseMoney();
         }
     }
 
