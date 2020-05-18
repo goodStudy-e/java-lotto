@@ -1,10 +1,6 @@
 package view;
 
-import domain.BonusBall;
-import domain.Lotto;
-import domain.PurchaseMoney;
-import domain.WinningLotto;
-import utility.LottoGenerator;
+import domain.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,24 +18,24 @@ public class InputView {
     public static PurchaseMoney inputPurchaseMoney() {
         OutputView.printInputPurchaseMoneyMessage();
         try {
-            int purchaseMoney = scanner.nextInt();
-            return new PurchaseMoney(purchaseMoney);
-        } catch (IllegalArgumentException e) { //todo: 표준화 된 예외를 사용하자!
+            return new PurchaseMoney(scanner.nextInt());
+        } catch (IllegalArgumentException e) {
             return inputPurchaseMoney();
         }
     }
 
-    public static List<Lotto> getUserLottos(int purchaseMoney) {
-        return generateUserLotto(new ArrayList<>(), getLottoNumber(purchaseMoney));
+    public static List<Lotto> getUserLottos(int purchaseMoney) { // todo: getUserLottos가 view영역에 필요한 것일까.. ? (인자들도 마찬가지)  Model로 LottoStore 라던지 LottoMachine 같은걸 만들까?
+        return generateUserLotto(getLottoNumber(purchaseMoney));
     }
 
-    private static List<Lotto> generateUserLotto(List<Lotto> userLottoList, int lottoNumber) {
+    private static List<Lotto> generateUserLotto(int lottoNumber) {
+        List<Lotto> userLottos = new ArrayList<>();
         for (int i = 0; i < lottoNumber; i++) {
-            Lotto userLotto = LottoGenerator.generateLotto();
-            userLottoList.add(userLotto);
+            Lotto userLotto = LottoStore.generateLotto();
+            userLottos.add(userLotto);
             OutputView.printLotto(userLotto);
         }
-        return userLottoList;
+        return new ArrayList<>(userLottos);
     }
 
     private static int getLottoNumber(int purchaseMoney) {
@@ -57,9 +53,9 @@ public class InputView {
     private static List<Integer> inputWinningLottoNumber() {
         List<Integer> winningLottoNumbers;
         try {
-            winningLottoNumbers = getWinningLottoNumbers();
+            winningLottoNumbers = getWinningLottoNumbers(); //todo: WinningLotto 초기화시에 예외처리!
             isRightLottoLength(winningLottoNumbers);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return inputWinningLottoNumber();
         }
         return winningLottoNumbers;
@@ -87,7 +83,7 @@ public class InputView {
         System.out.println(INPUT_BONUS_BALL_MESSAGE);
         try {
             return new BonusBall(scanner.nextInt(), winningLotto);
-        } catch (Exception e) { //todo: 표준화 된 예외를 사용하자!
+        } catch (IllegalArgumentException e) { //todo: 표준화 된 예외를 사용하자!
             return insertBonusBall(winningLotto);
         }
     }
