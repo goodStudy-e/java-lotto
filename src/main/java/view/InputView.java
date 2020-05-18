@@ -4,7 +4,6 @@ import domain.BonusBall;
 import domain.Lotto;
 import domain.PurchaseMoney;
 import domain.WinningLotto;
-import utility.InputException;
 import utility.LottoGenerator;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 public class InputView {
     private static final String INPUT_BONUS_BALL_MESSAGE = "보너스 볼을 입력해주세요.";
     private static final String INPUT_NUMBERS_LENGTH_ERROR = "서로 다른 6개의 숫자만 입력해주세요. (, 로 구분)";
-    public static final String COMMA = ",";
+    private static final String COMMA = ",";
 
     private static Scanner scanner = new Scanner(System.in);
 
@@ -68,7 +67,7 @@ public class InputView {
 
     private static void isRightLottoLength(List<Integer> winningLottoNumbers) {
         if (winningLottoNumbers.size() != Lotto.LOTTO_LENGTH) {
-            throw new InputException(INPUT_NUMBERS_LENGTH_ERROR);
+            throw new IllegalArgumentException(INPUT_NUMBERS_LENGTH_ERROR);
         }
     }
 
