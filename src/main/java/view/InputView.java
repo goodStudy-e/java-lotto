@@ -1,28 +1,28 @@
-package utility;
+package view;
 
+import domain.BonusBall;
 import domain.Lotto;
 import domain.PurchaseMoney;
 import domain.WinningLotto;
+import utility.InputException;
+import utility.LottoGenerator;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class InputManager {
-    private static final String INPUT_PURCHASE_MONEY_MESSAGE = "구입 금액을 입력해주세요.";
-    private static final String INPUT_WINNING_LOTTO_NUMBERS_MESSAGE = "지난주 당첨 번호를 입력해주세요. (, 로 구분)";
+public class InputView {
     private static final String INPUT_BONUS_BALL_MESSAGE = "보너스 볼을 입력해주세요.";
-    private static final String INPUT_NUMBERS_RANGE_ERROR = "1 ~ 45 중에 입력하세요!";
     private static final String INPUT_NUMBERS_LENGTH_ERROR = "서로 다른 6개의 숫자만 입력해주세요. (, 로 구분)";
-    private static final String INPUT_BONUS_BALL_OVERLAPPING_ERROR = "당첨 번호와 다른 숫자를 입력하세요!";
+    public static final String COMMA = ",";
 
     private static Scanner scanner = new Scanner(System.in);
 
     public static PurchaseMoney inputPurchaseMoney() {
-        System.out.println(INPUT_PURCHASE_MONEY_MESSAGE);
+        OutputView.printInputPurchaseMoneyMessage();
         try {
             int purchaseMoney = scanner.nextInt();
             return new PurchaseMoney(purchaseMoney);
-        } catch (InputException e) {
+        } catch (IllegalArgumentException e) { //todo: 표준화 된 예외를 사용하자!
             return inputPurchaseMoney();
         }
     }
@@ -35,9 +35,8 @@ public class InputManager {
         for (int i = 0; i < lottoNumber; i++) {
             Lotto userLotto = LottoGenerator.generateLotto();
             userLottoList.add(userLotto);
-            System.out.println(userLotto);
+            OutputView.printLotto(userLotto);
         }
-
         return userLottoList;
     }
 
@@ -48,7 +47,7 @@ public class InputManager {
     }
 
     public static WinningLotto inputWinningLotto() {
-        System.out.println(INPUT_WINNING_LOTTO_NUMBERS_MESSAGE);
+        OutputView.printInputWinningLottoMessage();
         Lotto winningLotto = new Lotto(inputWinningLottoNumber());
         return new WinningLotto(winningLotto, insertBonusBall(winningLotto));
     }
@@ -72,8 +71,9 @@ public class InputManager {
 
     private static List<Integer> getWinningLottoNumbers() {
         String inputNumbers = scanner.next();
-        String[] numbers = inputNumbers.split(",");
+        String[] numbers = inputNumbers.split(COMMA);
         return Arrays.stream(numbers)
+                .map(String::trim)
                 .mapToInt(Integer::parseInt)
                 .filter(number -> Lotto.MIN_LOTTO_NUMBER <= number && number <= Lotto.MAX_LOTTO_NUMBER) // 범위 외 숫자 제거
                 .distinct() //중복된 숫자 제거
@@ -81,25 +81,12 @@ public class InputManager {
                 .collect(Collectors.toList());
     }
 
-    private static int insertBonusBall(Lotto winningLotto) {
+    private static BonusBall insertBonusBall(Lotto winningLotto) {
         System.out.println(INPUT_BONUS_BALL_MESSAGE);
-        int bonusBall = scanner.nextInt();
-        System.out.println();
         try {
-            isRightBonusBall(bonusBall, winningLotto);
-        } catch (Exception e) {
+            return new BonusBall(scanner.nextInt(), winningLotto);
+        } catch (Exception e) { //todo: 표준화 된 예외를 사용하자!
             return insertBonusBall(winningLotto);
-        }
-        return bonusBall;
-    }
-
-    private static void isRightBonusBall(int bonusBall, Lotto winningLotto) {
-        if (bonusBall > Lotto.MAX_LOTTO_NUMBER || bonusBall < Lotto.MIN_LOTTO_NUMBER) {
-            throw new InputException(INPUT_NUMBERS_RANGE_ERROR);
-        }
-
-        if (winningLotto.getNumbers().contains(bonusBall)) {
-            throw new InputException(INPUT_BONUS_BALL_OVERLAPPING_ERROR);
         }
     }
 }
