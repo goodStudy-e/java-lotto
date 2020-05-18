@@ -7,7 +7,10 @@ import domain.WinningLotto;
 import utility.InputException;
 import utility.LottoGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class InputView {
