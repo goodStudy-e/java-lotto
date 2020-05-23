@@ -19,13 +19,13 @@ public class PurchaseMoney {
 
     private void validateMultipleOfPrice(int amount) {
         if (amount % Lotto.LOTTO_UNIT_PRICE != ZERO) {
-            throw new IllegalArgumentException(INPUT_PURCHASE_MONEY_ERROR); //todo: 표준 예외로 변경
+            throw new IllegalArgumentException(INPUT_PURCHASE_MONEY_ERROR);
         }
     }
 
     private void validatePositive(int amount) {
         if (amount <= ZERO) {
-            throw new IllegalArgumentException(INPUT_PURCHASE_MONEY_NONE_ZERO_ERROR); //todo: 표준 예외로 변경
+            throw new IllegalArgumentException(INPUT_PURCHASE_MONEY_NONE_ZERO_ERROR);
         }
     }
 
