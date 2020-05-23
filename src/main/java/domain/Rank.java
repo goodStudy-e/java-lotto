@@ -32,7 +32,7 @@ public enum Rank {
             return MISS;
         }
 
-        if (SECOND.matchCount(countOfMatch) && matchBonus) { //todo: 이부분이 적용이 안됌 ...ㅠㅠ 
+        if (SECOND.matchCount(countOfMatch) && matchBonus) {
             return SECOND;
         }
 
@@ -41,7 +41,7 @@ public enum Rank {
         }
 
         for (Rank rank : values()) {
-            if (rank.matchCount(countOfMatch)) { //SECOND에 대한 예외처리 안돼있음
+            if (rank.matchCount(countOfMatch)) {
                 return rank;
             }
         }
