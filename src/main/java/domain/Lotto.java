@@ -39,7 +39,7 @@ public class Lotto {
     private boolean isDuplicated(List<Integer> numbers) {
         int distinctNumberSize = (int) numbers.stream()
                 .mapToInt(Integer::intValue)
-                .distinct() //중복된 숫자 제거
+                .distinct()
                 .count();
         return numbers.size() != distinctNumberSize;
     }
