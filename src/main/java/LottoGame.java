@@ -1,20 +1,22 @@
 import domain.*;
-import utility.InputManager;
-import utility.OutputManager;
+import view.InputView;
+import view.OutputView;
 
 import java.util.List;
 import java.util.Map;
 
 public class LottoGame {
     public static void main(String[] args) {
-        PurchaseMoney purchaseMoney = InputManager.inputPurchaseMoney(); //구입금액
-        List<Lotto> userLottos = InputManager.getUserLottos(purchaseMoney.getAmount()); // 유저의 로또
-        WinningLotto winningLotto = InputManager.inputWinningLotto(); // 당첨번호, 보너스볼 입력
+        PurchaseMoney purchaseMoney = InputView.inputPurchaseMoney(); //구입금액
+        LottoStore lottoStore = new LottoStore(purchaseMoney);
+        OutputView.printBuyLottoNumber(lottoStore.getLottoNumber());
+        List<Lotto> userLottos = lottoStore.issueUserLottos(); // 유저의 로또
+        OutputView.printLottos(userLottos);
+        WinningLotto winningLotto = InputView.inputWinningLotto(); // 당첨번호, 보너스볼 입력
 
-        List<Rank> userWinningLottos = LottoResult.getUserWinningLottos(userLottos, winningLotto); // 유저의 당첨된 로또들
-        Map<Rank, Integer> lottosByRank = LottoResult.getLottosByRank(userWinningLottos);
-        double earningrate = LottoResult.getEarningRate(lottosByRank, purchaseMoney);
-
-        OutputManager.printResult(lottosByRank, earningrate);
+        LottoResult lottoResult = new LottoResult(userLottos, winningLotto);
+        Map<Rank, Integer> lottoByRank = lottoResult.getLottosByRank();
+        double earningsRate = lottoResult.calculateEarningRate(lottoByRank, purchaseMoney);
+        OutputView.printResult(lottoByRank, earningsRate);
     }
 }
