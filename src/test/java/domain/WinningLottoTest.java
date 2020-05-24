@@ -29,8 +29,8 @@ class WinningLottoTest {
     @Test
     void test_matchFunction() {
         //given
-        Lotto lotto = new Lotto(Arrays.asList(1,2,3,4,5,6));
-        Lotto userLotto = new Lotto(Arrays.asList(1,2,3,4,5,10));
+        Lotto lotto = new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6));
+        Lotto userLotto = new Lotto(Arrays.asList(1, 2, 3, 4, 5, 10));
         int bonusNumber = 7;
         BonusBall bonusBall = new BonusBall(bonusNumber, lotto);
 
