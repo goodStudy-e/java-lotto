@@ -16,7 +16,8 @@ public class LottoGame {
 
         LottoResult lottoResult = new LottoResult(userLottos, winningLotto);
         Map<Rank, Integer> lottoByRank = lottoResult.getLottosByRank();
-        double earningsRate = lottoResult.calculateEarningRate(lottoByRank, purchaseMoney);
+
+        double earningsRate = Calculator.calculateEarningRate(lottoByRank, purchaseMoney);
         OutputView.printResult(lottoByRank, earningsRate);
     }
 }
