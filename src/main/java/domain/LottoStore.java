@@ -36,7 +36,7 @@ public class LottoStore {
         return new Lotto(lottoNumbers);
     }
 
-    private static void isDuplicated(List<Integer> lottoNumbers) {
+    private void isDuplicated(List<Integer> lottoNumbers) {
         Random random = new Random();
         int randomNumber = Lotto.MIN_LOTTO_NUMBER + random.nextInt(Lotto.MAX_LOTTO_NUMBER); //1 ~ 45
         if (lottoNumbers.contains(randomNumber)) {
