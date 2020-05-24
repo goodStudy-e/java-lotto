@@ -16,8 +16,7 @@ public class LottoStore {
     }
 
     private int calculateLottoNumber() {
-        int lottoNumber = purchaseMoney.getAmount() / Lotto.LOTTO_UNIT_PRICE;
-        return lottoNumber;
+        return purchaseMoney.getAmount() / Lotto.LOTTO_UNIT_PRICE;
     }
 
     public List<Lotto> issueUserLottos() {
