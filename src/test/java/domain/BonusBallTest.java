@@ -36,7 +36,19 @@ class BonusBallTest {
                 .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("보너스볼이 로또숫자 범위를 벗어나면 예외를 발생시킨다")
+    @DisplayName("보너스볼이 로또숫자 범위보다 작으면 예외를 발생시킨다")
+    @Test
+    void test_OverRangeNumberExceptionZero() {
+        //given
+        int bonusBallNumber = 0;
+        Lotto lotto = new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6));
+
+        //when then
+        assertThatThrownBy(() -> new BonusBall(bonusBallNumber, lotto))
+                .isExactlyInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("보너스볼이 로또숫자 범위보다 크면 예외를 발생시킨다")
     @Test
     void test_OverRangeNumberException() {
         //given
