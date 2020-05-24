@@ -6,6 +6,10 @@ import java.util.Map;
 public class Calculator {
     private static final int PERCENTAGE = 100;
 
+    private Calculator() {
+        throw new AssertionError();
+    }
+
     public static double calculateEarningRate(Map<Rank, Integer> lottoByRank, PurchaseMoney purchaseMoney) {
         return (double) getTotalWinningMoney(lottoByRank) / purchaseMoney.getAmount() * PERCENTAGE;
     }
