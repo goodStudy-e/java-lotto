@@ -17,7 +17,7 @@ class RankTest {
         int countOfMatchThree = 3;
         int countOfMatchTwo = 2;
 
-        //then
+        //when
         Rank answer1 = Rank.valueOf(countOfMatchSix, false);
         Rank answer2 = Rank.valueOf(countOfMatchFive, true);
         Rank answer3 = Rank.valueOf(countOfMatchFive, false);
